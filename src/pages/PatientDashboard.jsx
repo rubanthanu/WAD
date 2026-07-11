@@ -144,7 +144,7 @@ export default function PatientDashboard() {
               <tbody>
                 {appointments.map((appt) => (
                   <tr key={appt.id}>
-                    <td style={{ fontWeight: 600, color: 'white' }}>{appt.doctor_name}</td>
+                    <td style={{ fontWeight: 600, color: 'var(--text-main)' }}>{appt.doctor_name}</td>
                     <td>
                       <div>{appt.department_name}</div>
                       <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{appt.specialization}</div>

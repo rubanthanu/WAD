@@ -37,8 +37,8 @@ export default function Home() {
             display: 'inline-flex',
             alignItems: 'center',
             gap: '0.5rem',
-            background: 'rgba(59, 130, 246, 0.1)',
-            color: '#60a5fa',
+            background: 'rgba(37, 99, 235, 0.08)',
+            color: 'var(--primary)',
             padding: '0.35rem 1rem',
             borderRadius: '50px',
             fontSize: '0.85rem',
@@ -48,7 +48,7 @@ export default function Home() {
             <Activity size={14} /> 24/7 Digital Health Hub
           </div>
           <h1 style={{ fontSize: '3.2rem', marginBottom: '0.5rem' }}>
-            Your Health Is Our <span style={{ color: 'var(--primary)', background: 'linear-gradient(to right, #3b82f6, #60a5fa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>First Priority</span>
+            Your Health Is Our <span style={{ color: 'var(--primary)', background: 'linear-gradient(to right, #2563eb, #0891b2)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>First Priority</span>
           </h1>
           <p style={{ fontSize: '1.1rem', maxWidth: '600px' }}>
             Book appointments instantly, check doctor availabilities, and manage your health dashboard. Experience seamless hospital care powered by advanced digital schedules.
@@ -87,8 +87,8 @@ export default function Home() {
             display: 'flex',
             flexDirection: 'column',
             gap: '1.25rem',
-            background: 'rgba(15, 23, 42, 0.9)',
-            border: '1px solid rgba(255, 255, 255, 0.12)',
+            background: 'rgba(255, 255, 255, 0.9)',
+            border: '1px solid rgba(0, 0, 0, 0.08)',
             transform: 'rotate(2deg)'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -143,7 +143,7 @@ export default function Home() {
             alignItems: 'center',
             gap: '1.25rem',
             padding: '1.5rem',
-            background: 'linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.05) 100%)'
+            background: 'linear-gradient(135deg, rgba(0,0,0,0.01) 0%, rgba(0,0,0,0.03) 100%)'
           }}>
             <div style={{
               background: `rgba(${hexToRgb(stat.color)}, 0.15)`,
@@ -216,14 +216,14 @@ export default function Home() {
           <p>Read inspiring experiences shared by our community patients who trusted us with their treatment and recoveries.</p>
         </div>
         <div className="glass-card" style={{
-          background: 'rgba(255, 255, 255, 0.01)',
-          border: '1px solid rgba(255, 255, 255, 0.05)',
+          background: 'rgba(0, 0, 0, 0.01)',
+          border: '1px solid rgba(0, 0, 0, 0.05)',
           padding: '1.75rem',
           display: 'flex',
           flexDirection: 'column',
           gap: '1rem'
         }}>
-          <p style={{ fontStyle: 'italic', fontSize: '1.05rem', color: '#e2e8f0' }}>
+          <p style={{ fontStyle: 'italic', fontSize: '1.05rem', color: 'var(--text-main)' }}>
             "The booking system is super simple! I booked a cardiology checkup with Dr. Sarah Jenkins last night and received quick consultation today morning. Absolute lifesaver."
           </p>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>

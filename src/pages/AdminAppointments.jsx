@@ -172,11 +172,11 @@ export default function AdminAppointments() {
                 {appointments.map((appt) => (
                   <tr key={appt.id}>
                     <td>
-                      <div style={{ fontWeight: 600, color: 'white' }}>{appt.patient_name}</div>
+                      <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{appt.patient_name}</div>
                       <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{appt.patient_phone || appt.patient_email}</div>
                     </td>
                     <td>
-                      <div style={{ fontWeight: 600, color: 'white' }}>{appt.doctor_name}</div>
+                      <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{appt.doctor_name}</div>
                       <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{appt.specialization}</div>
                     </td>
                     <td>{appt.department_name}</td>
@@ -194,7 +194,7 @@ export default function AdminAppointments() {
                           padding: '0.25rem 0.5rem',
                           fontSize: '0.85rem',
                           width: '120px',
-                          background: 'rgba(255,255,255,0.05)'
+                          background: 'var(--bg-input)'
                         }}
                         value={appt.status}
                         onChange={(e) => handleStatusChange(appt.id, e.target.value)}

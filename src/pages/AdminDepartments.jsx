@@ -213,7 +213,7 @@ export default function AdminDepartments() {
                 <tbody>
                   {departments.map((dept) => (
                     <tr key={dept.id}>
-                      <td style={{ fontWeight: 600, color: 'white' }}>{dept.name}</td>
+                      <td style={{ fontWeight: 600, color: 'var(--text-main)' }}>{dept.name}</td>
                       <td>{dept.description || <span style={{ fontStyle: 'italic' }}>No description</span>}</td>
                       <td>
                         <div style={{ display: 'flex', gap: '0.5rem' }}>

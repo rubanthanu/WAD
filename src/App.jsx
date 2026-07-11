@@ -257,7 +257,7 @@ function AppLayout({ children }) {
     <div className="app-container">
       {/* Header Navbar */}
       <header style={{
-        background: 'rgba(9, 13, 22, 0.8)',
+        background: 'rgba(255, 255, 255, 0.8)',
         backdropFilter: 'blur(12px)',
         borderBottom: '1px solid var(--glass-border)',
         position: 'sticky',
@@ -278,7 +278,7 @@ function AppLayout({ children }) {
             alignItems: 'center',
             gap: '0.5rem',
             textDecoration: 'none',
-            color: 'white',
+            color: 'var(--text-main)',
             fontWeight: 800,
             fontSize: '1.25rem'
           }}>
@@ -331,7 +331,7 @@ function AppLayout({ children }) {
             style={{
               background: 'none',
               border: 'none',
-              color: 'white',
+              color: 'var(--text-main)',
               cursor: 'pointer',
               display: 'none' // Controlled in inline media-style CSS below
             }}
@@ -399,13 +399,13 @@ function AppLayout({ children }) {
             border-radius: 6px;
           }
           .nav-link:hover {
-            color: white;
-            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            background-color: rgba(0, 0, 0, 0.04);
           }
           .nav-link.active {
             color: var(--primary);
             font-weight: 600;
-            background-color: rgba(59, 130, 246, 0.1);
+            background-color: rgba(37, 99, 235, 0.08);
           }
           .mobile-drawer a {
             text-decoration: none;
@@ -413,7 +413,7 @@ function AppLayout({ children }) {
             font-size: 1.1rem;
             font-weight: 500;
             padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
           }
           @media (max-width: 768px) {
             .desktop-nav {
@@ -433,7 +433,7 @@ function AppLayout({ children }) {
 
       {/* Footer */}
       <footer style={{
-        background: 'rgba(9, 13, 22, 0.95)',
+        background: 'rgba(255, 255, 255, 0.95)',
         borderTop: '1px solid var(--glass-border)',
         padding: '2rem 1rem',
         marginTop: '4rem'

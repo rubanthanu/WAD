@@ -109,7 +109,7 @@ export default function AdminDashboard() {
               <ClipboardList size={20} />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'white' }}>
+              <h3 style={{ fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--text-main)' }}>
                 All Appointments <ChevronRight size={16} />
               </h3>
               <p style={{ fontSize: '0.85rem', marginTop: '0.25rem' }}>Review all scheduled appointments, edit statuses, or delete records.</p>
@@ -128,7 +128,7 @@ export default function AdminDashboard() {
               <Settings size={20} />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'white' }}>
+              <h3 style={{ fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--text-main)' }}>
                 Manage Doctors <ChevronRight size={16} />
               </h3>
               <p style={{ fontSize: '0.85rem', marginTop: '0.25rem' }}>Add new doctor users, specify specializations, and configure schedule limits.</p>
@@ -147,7 +147,7 @@ export default function AdminDashboard() {
               <Activity size={20} />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'white' }}>
+              <h3 style={{ fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--text-main)' }}>
                 Manage Departments <ChevronRight size={16} />
               </h3>
               <p style={{ fontSize: '0.85rem', marginTop: '0.25rem' }}>Create clinical departments, update designations, and overview details.</p>

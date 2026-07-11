@@ -170,7 +170,7 @@ export default function DoctorDashboard() {
                   {appointments.map((appt) => (
                     <tr key={appt.id}>
                       <td>
-                        <div style={{ fontWeight: 600, color: 'white' }}>{appt.patient_name}</div>
+                        <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{appt.patient_name}</div>
                         <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{appt.patient_phone || appt.patient_email}</div>
                       </td>
                       <td>

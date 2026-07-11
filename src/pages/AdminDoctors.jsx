@@ -317,7 +317,7 @@ export default function AdminDoctors() {
                   {doctors.map((doc) => (
                     <tr key={doc.id}>
                       <td>
-                        <div style={{ fontWeight: 600, color: 'white' }}>{doc.name}</div>
+                        <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{doc.name}</div>
                         <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{doc.email}</div>
                       </td>
                       <td>

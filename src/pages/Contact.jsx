@@ -180,7 +180,7 @@ export default function Contact() {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 fontWeight: 600,
-                color: activeFaq === idx ? 'white' : 'var(--text-main)'
+                color: activeFaq === idx ? 'var(--primary)' : 'var(--text-main)'
               }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                   <HelpCircle size={18} color="var(--primary)" />
