@@ -20,9 +20,7 @@ switch ($route) {
     case 'stats':
         App::dispatch('AdminController', 'stats');
         break;
-    case 'bootstrap':
-        App::dispatch('AdminController', 'bootstrap');
-        break;
+    
     default:
         Response::error("Endpoint not found", 404);
 }
