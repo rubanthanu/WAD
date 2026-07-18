@@ -5,12 +5,12 @@ class Session
     
     public static function getUserId(): int|string|null
     {
-        return $_SESSION['user_id'] ?? $_SERVER['HTTP_X_USER_ID'] ?? null;
+        return $_SESSION['user_id'] ?? null;
     }
 
     public static function getUserRole(): ?string
     {
-        return $_SESSION['role'] ?? $_SERVER['HTTP_X_USER_ROLE'] ?? null;
+        return $_SESSION['role'] ?? null;
     }
 
     public static function isAuthenticated(): bool

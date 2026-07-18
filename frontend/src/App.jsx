@@ -42,14 +42,6 @@ export default function App() {
       headers['Content-Type'] = 'application/json';
     }
 
-    // Pass custom authentication headers to solve CORS session variables in development
-    const cachedUser = localStorage.getItem('hospital_user');
-    if (cachedUser) {
-      const parsed = JSON.parse(cachedUser);
-      headers['X-User-Id'] = parsed.id;
-      headers['X-User-Role'] = parsed.role;
-    }
-
     try {
       // Rewrite legacy URLs (e.g., /appointments.php?search=x) to MVC router (/index.php?route=appointments&search=x)
       let processedUrl = url;
@@ -66,6 +58,7 @@ export default function App() {
       const response = await fetch(`http://localhost/WAD/api${finalUrl}`, {
         ...options,
         headers,
+        credentials: 'include',
       });
 
       const text = await response.text();
