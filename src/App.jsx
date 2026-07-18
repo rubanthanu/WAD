@@ -51,7 +51,19 @@ export default function App() {
     }
 
     try {
-      const response = await fetch(`http://localhost/WAD/api${url}`, {
+      // Rewrite legacy URLs (e.g., /appointments.php?search=x) to MVC router (/index.php?route=appointments&search=x)
+      let processedUrl = url;
+      if (processedUrl.startsWith('/')) processedUrl = processedUrl.substring(1);
+      
+      const [path, queryString] = processedUrl.split('?');
+      const routeName = path.replace('.php', '');
+      
+      let finalUrl = `/index.php?route=${routeName}`;
+      if (queryString) {
+        finalUrl += `&${queryString}`;
+      }
+
+      const response = await fetch(`http://localhost/WAD/api${finalUrl}`, {
         ...options,
         headers,
       });
