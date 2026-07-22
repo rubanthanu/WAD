@@ -2,13 +2,13 @@
 
 class AuthController extends Controller
 {
-    
+
     public function handle(): void
     {
         $method = $this->getMethod();
 
         if ($method === 'POST') {
-            $data = $this->getInput();
+            $data   = $this->getInput();
             $action = $data['action'] ?? '';
 
             match ($action) {
@@ -23,6 +23,10 @@ class AuthController extends Controller
             Response::error("Method not allowed.", 405);
         }
     }
+
+    // -------------------------------------------------------------------------
+    // Fix 2 — session_regenerate_id(true) added after credential verification
+    // -------------------------------------------------------------------------
 
     private function login(array $data): void
     {
@@ -39,14 +43,23 @@ class AuthController extends Controller
         $user = $userModel->login();
 
         if ($user) {
+            // Fix 2: Regenerate session ID BEFORE writing any session variables.
+            // Prevents session fixation — any attacker-supplied session ID is
+            // invalidated and a fresh, server-generated ID is issued.
+            Session::regenerate();
+
             Session::set('user_id', $user['id']);
-            Session::set('role', $user['role']);
-            Session::set('name', $user['name']);
+            Session::set('role',    $user['role']);
+            Session::set('name',    $user['name']);
+
+            // Seed the activity timestamp so checkTimeout works from first request
+            Session::set('_last_activity', time());
 
             Response::json([
-                "success" => true,
-                "message" => "Login successful",
-                "user"    => $user,
+                "success"    => true,
+                "message"    => "Login successful",
+                "user"       => $user,
+                "csrf_token" => Session::generateCsrfToken(), // available for frontend use
             ]);
         } else {
             Response::error("Invalid email or password.", 401);
@@ -59,7 +72,7 @@ class AuthController extends Controller
         $email    = $data['email'] ?? '';
         $password = $data['password'] ?? '';
         $phone    = $data['phone'] ?? '';
-        $role     = 'patient'; 
+        $role     = 'patient';
 
         if (empty($name) || empty($email) || empty($password)) {
             Response::error("Name, email and password are required.", 400);
@@ -90,12 +103,17 @@ class AuthController extends Controller
 
     private function logout(): void
     {
+        // Fix 3: destroy() now also clears the browser cookie
         Session::destroy();
         Response::json([
             "success" => true,
             "message" => "Logged out successfully",
         ]);
     }
+
+    // -------------------------------------------------------------------------
+    // Fix 6 — Stale session cleanup
+    // -------------------------------------------------------------------------
 
     private function checkSession(): void
     {
@@ -104,13 +122,20 @@ class AuthController extends Controller
             $userModel = new User($this->db);
             $userModel->setId((int)$userId);
             $user = $userModel->getUserById();
+
             if ($user) {
                 Response::json([
                     "authenticated" => true,
                     "user"          => $user,
+                    "csrf_token"    => Session::generateCsrfToken(), // available for frontend use
                 ]);
             }
+
+            // Fix 6: user_id is set but user no longer exists in DB.
+            // Destroy the stale session so requireAuth() stops passing it.
+            Session::destroy();
         }
+
         Response::json([
             "authenticated" => false,
             "user"          => null,

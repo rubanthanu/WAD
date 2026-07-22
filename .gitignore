@@ -22,3 +22,13 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Vite cache (may land at project root if vite is run outside frontend/)
+.vite/
+
+
+
+# Environment variable files
+.env
+.env.*
+!.env.example

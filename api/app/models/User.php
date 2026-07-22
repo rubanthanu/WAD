@@ -77,7 +77,8 @@ class User extends Model
 
     public function login(): array|false
     {
-        $query = "SELECT * FROM users WHERE email = :email LIMIT 1";
+        // Fix 10: Explicit columns — password fetched only for password_verify(); not returned to caller
+        $query = "SELECT id, name, email, role, phone, password FROM users WHERE email = :email LIMIT 1";
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':email', $this->getEmail());
         $stmt->execute();
