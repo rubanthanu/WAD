@@ -27,13 +27,14 @@ class DepartmentController extends Controller
     {
         $this->requireRole('admin', "Access denied. Administrator privileges required.");
 
-        $data        = $this->getInput();
-        $name        = $data['name'] ?? '';
-        $description = $data['description'] ?? '';
+        $data = $this->getInput();
 
-        if (empty($name)) {
+        if (!Validator::required($data, ['name'])) {
             Response::error("Department name is required.", 400);
         }
+
+        $name        = trim($data['name']);
+        $description = trim($data['description'] ?? '');
 
         $departmentModel = new Department($this->db);
         $departmentModel->setName($name);
@@ -49,17 +50,18 @@ class DepartmentController extends Controller
     {
         $this->requireRole('admin', "Access denied. Administrator privileges required.");
 
-        $data        = $this->getInput();
-        $id          = $data['id'] ?? null;
-        $name        = $data['name'] ?? '';
-        $description = $data['description'] ?? '';
+        $data = $this->getInput();
 
-        if (!$id || empty($name)) {
+        if (!Validator::required($data, ['id', 'name'])) {
             Response::error("Department ID and name are required.", 400);
         }
 
+        $id          = (int)$data['id'];
+        $name        = trim($data['name']);
+        $description = trim($data['description'] ?? '');
+
         $departmentModel = new Department($this->db);
-        $departmentModel->setId((int)$id);
+        $departmentModel->setId($id);
         $departmentModel->setName($name);
         $departmentModel->setDescription($description);
         if ($departmentModel->update()) {

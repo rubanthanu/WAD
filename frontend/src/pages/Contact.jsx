@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, HelpCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import React, { useState, useContext } from 'react';
+import { Mail, Phone, MapPin, Send, HelpCircle, ChevronDown, ChevronUp, AlertCircle, CheckCircle } from 'lucide-react';
+import { AuthContext } from '../App';
 
 export default function Contact() {
+  const { apiFetch } = useContext(AuthContext);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [msg, setMsg] = useState('');
-  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   // Accordion state
   const [activeFaq, setActiveFaq] = useState(null);
@@ -17,14 +21,35 @@ export default function Contact() {
     { q: 'What should I do in case of an emergency?', a: 'For acute emergencies, please call our 24/7 hotline at 1-800-555-9999 or proceed immediately to the Emergency Ward located at the ground floor.' }
   ];
 
-  const handleContactSubmit = (e) => {
+  const handleContactSubmit = async (e) => {
     e.preventDefault();
-    if (!name || !email || !msg) return;
-    setSuccess(true);
-    setName('');
-    setEmail('');
-    setMsg('');
-    setTimeout(() => setSuccess(false), 4000);
+    setError('');
+    setSuccess('');
+
+    if (!name || !email || !msg) {
+      setError('Please fill in all required fields.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await apiFetch('/contact.php', {
+        method: 'POST',
+        body: JSON.stringify({ name, email, message: msg })
+      });
+
+      if (response.success) {
+        setSuccess('Your message has been sent successfully! We will get back to you shortly.');
+        setName('');
+        setEmail('');
+        setMsg('');
+        setTimeout(() => setSuccess(''), 5000);
+      }
+    } catch (err) {
+      setError(err.message || 'Failed to send message. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const toggleFaq = (idx) => {
@@ -114,9 +139,16 @@ export default function Contact() {
         {/* Contact Form */}
         <div className="glass-card">
           <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Send Us a Message</h2>
+          {error && (
+            <div className="alert alert-error" style={{ marginBottom: '1.5rem' }}>
+              <AlertCircle size={18} />
+              <span>{error}</span>
+            </div>
+          )}
           {success && (
             <div className="alert alert-success" style={{ marginBottom: '1.5rem' }}>
-              Your message has been sent successfully! We will get back to you shortly.
+              <CheckCircle size={18} />
+              <span>{success}</span>
             </div>
           )}
           <form onSubmit={handleContactSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
@@ -128,6 +160,7 @@ export default function Contact() {
                 placeholder="Your Name" 
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                disabled={loading}
                 required
               />
             </div>
@@ -140,6 +173,7 @@ export default function Contact() {
                 placeholder="you@example.com" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
                 required
               />
             </div>
@@ -153,12 +187,13 @@ export default function Contact() {
                 style={{ resize: 'vertical' }}
                 value={msg}
                 onChange={(e) => setMsg(e.target.value)}
+                disabled={loading}
                 required
               ></textarea>
             </div>
 
-            <button type="submit" className="btn btn-primary" style={{ width: 'fit-content' }}>
-              Send Inquiries <Send size={16} />
+            <button type="submit" className="btn btn-primary" style={{ width: 'fit-content' }} disabled={loading}>
+              {loading ? 'Sending...' : 'Send Inquiries'} <Send size={16} />
             </button>
           </form>
         </div>

@@ -24,17 +24,17 @@ class AuthController extends Controller
         }
     }
 
-    // -------------------------------------------------------------------------
-    // Fix 2 — session_regenerate_id(true) added after credential verification
-    // -------------------------------------------------------------------------
-
     private function login(array $data): void
     {
-        $email    = $data['email'] ?? '';
-        $password = $data['password'] ?? '';
-
-        if (empty($email) || empty($password)) {
+        if (!Validator::required($data, ['email', 'password'])) {
             Response::error("Email and password are required.", 400);
+        }
+
+        $email    = trim($data['email']);
+        $password = $data['password'];
+
+        if (!Validator::email($email)) {
+            Response::error("Please provide a valid email address.", 400);
         }
 
         $userModel = new User($this->db);
@@ -43,23 +43,21 @@ class AuthController extends Controller
         $user = $userModel->login();
 
         if ($user) {
-            // Fix 2: Regenerate session ID BEFORE writing any session variables.
-            // Prevents session fixation — any attacker-supplied session ID is
-            // invalidated and a fresh, server-generated ID is issued.
+            // Regenerate session ID BEFORE writing session variables
             Session::regenerate();
 
             Session::set('user_id', $user['id']);
             Session::set('role',    $user['role']);
             Session::set('name',    $user['name']);
 
-            // Seed the activity timestamp so checkTimeout works from first request
+            // Seed activity timestamp for session timeout
             Session::set('_last_activity', time());
 
             Response::json([
                 "success"    => true,
                 "message"    => "Login successful",
                 "user"       => $user,
-                "csrf_token" => Session::generateCsrfToken(), // available for frontend use
+                "csrf_token" => Session::generateCsrfToken(),
             ]);
         } else {
             Response::error("Invalid email or password.", 401);
@@ -68,14 +66,22 @@ class AuthController extends Controller
 
     private function register(array $data): void
     {
-        $name     = $data['name'] ?? '';
-        $email    = $data['email'] ?? '';
-        $password = $data['password'] ?? '';
-        $phone    = $data['phone'] ?? '';
+        if (!Validator::required($data, ['name', 'email', 'password'])) {
+            Response::error("Name, email and password are required.", 400);
+        }
+
+        $name     = trim($data['name']);
+        $email    = trim($data['email']);
+        $password = $data['password'];
+        $phone    = trim($data['phone'] ?? '');
         $role     = 'patient';
 
-        if (empty($name) || empty($email) || empty($password)) {
-            Response::error("Name, email and password are required.", 400);
+        if (!Validator::email($email)) {
+            Response::error("Please provide a valid email address.", 400);
+        }
+
+        if (strlen($password) < 6) {
+            Response::error("Password must be at least 6 characters long.", 400);
         }
 
         try {
@@ -103,17 +109,12 @@ class AuthController extends Controller
 
     private function logout(): void
     {
-        // Fix 3: destroy() now also clears the browser cookie
         Session::destroy();
         Response::json([
             "success" => true,
             "message" => "Logged out successfully",
         ]);
     }
-
-    // -------------------------------------------------------------------------
-    // Fix 6 — Stale session cleanup
-    // -------------------------------------------------------------------------
 
     private function checkSession(): void
     {
@@ -127,12 +128,10 @@ class AuthController extends Controller
                 Response::json([
                     "authenticated" => true,
                     "user"          => $user,
-                    "csrf_token"    => Session::generateCsrfToken(), // available for frontend use
+                    "csrf_token"    => Session::generateCsrfToken(),
                 ]);
             }
 
-            // Fix 6: user_id is set but user no longer exists in DB.
-            // Destroy the stale session so requireAuth() stops passing it.
             Session::destroy();
         }
 

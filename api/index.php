@@ -17,6 +17,9 @@ switch ($route) {
     case 'departments':
         App::dispatch('DepartmentController', 'handle');
         break;
+    case 'contact':
+        App::dispatch('ContactController', 'handle');
+        break;
     case 'stats':
         App::dispatch('AdminController', 'stats');
         break;

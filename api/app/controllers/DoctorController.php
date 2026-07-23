@@ -47,17 +47,21 @@ class DoctorController extends Controller
 
         $data = $this->getInput();
 
-        $name           = $data['name'] ?? '';
-        $email          = $data['email'] ?? '';
-        $password       = $data['password'] ?? '';
-        $phone          = $data['phone'] ?? '';
-        $specialization = $data['specialization'] ?? '';
-        $departmentId   = $data['department_id'] ?? null;
-        $availability   = $data['availability'] ?? 'Monday - Friday (9 AM - 5 PM)';
-
-        if (empty($name) || empty($email) || empty($password) || empty($specialization) || !$departmentId) {
+        if (!Validator::required($data, ['name', 'email', 'password', 'specialization', 'department_id'])) {
             Response::error("Name, email, password, specialization, and department are required.", 400);
         }
+
+        $email = trim($data['email']);
+        if (!Validator::email($email)) {
+            Response::error("Please provide a valid email address.", 400);
+        }
+
+        $name           = trim($data['name']);
+        $password       = $data['password'];
+        $phone          = trim($data['phone'] ?? '');
+        $specialization = trim($data['specialization']);
+        $departmentId   = (int)$data['department_id'];
+        $availability   = trim($data['availability'] ?? 'Monday - Friday (9 AM - 5 PM)');
 
         try {
             $adminModel = new Admin($this->db);
@@ -80,10 +84,10 @@ class DoctorController extends Controller
         $userRole = $this->getUserRole();
 
         if ($userRole === 'doctor') {
-            $availability = $data['availability'] ?? '';
-            if (empty($availability)) {
+            if (!Validator::required($data, ['availability'])) {
                 Response::error("Availability details cannot be empty.", 400);
             }
+            $availability = trim($data['availability']);
 
             $doctorModel = new Doctor($this->db);
             $doctorModel->setUserId((int)$userId);
@@ -94,17 +98,21 @@ class DoctorController extends Controller
                 Response::error("Failed to update availability.", 500);
             }
         } elseif ($userRole === 'admin') {
-            $doctorId       = $data['doctor_id'] ?? null;
-            $name           = $data['name'] ?? '';
-            $email          = $data['email'] ?? '';
-            $phone          = $data['phone'] ?? '';
-            $specialization = $data['specialization'] ?? '';
-            $departmentId   = $data['department_id'] ?? null;
-            $availability   = $data['availability'] ?? '';
-
-            if (!$doctorId || empty($name) || empty($email) || empty($specialization) || !$departmentId) {
+            if (!Validator::required($data, ['doctor_id', 'name', 'email', 'specialization', 'department_id'])) {
                 Response::error("Missing required fields for update.", 400);
             }
+
+            $email = trim($data['email']);
+            if (!Validator::email($email)) {
+                Response::error("Please provide a valid email address.", 400);
+            }
+
+            $doctorId       = (int)$data['doctor_id'];
+            $name           = trim($data['name']);
+            $phone          = trim($data['phone'] ?? '');
+            $specialization = trim($data['specialization']);
+            $departmentId   = (int)$data['department_id'];
+            $availability   = trim($data['availability'] ?? '');
 
             try {
                 $adminModel = new Admin($this->db);
@@ -132,7 +140,7 @@ class DoctorController extends Controller
 
         try {
             $adminModel = new Admin($this->db);
-            if ($adminModel->deleteDoctor($doctorId)) {
+            if ($adminModel->deleteDoctor((int)$doctorId)) {
                 Response::success("Doctor deleted successfully.");
             } else {
                 Response::error("Failed to delete doctor.", 500);

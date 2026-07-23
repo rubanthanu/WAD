@@ -54,20 +54,24 @@ class AppointmentController extends Controller
 
         $data = $this->getInput();
 
-        $patientId = $userRole === 'admin' ? ($data['patient_id'] ?? null) : $userId;
-        $doctorId  = $data['doctor_id'] ?? null;
-        $date      = $data['appointment_date'] ?? null;
-        $time      = $data['appointment_time'] ?? null;
-        $notes     = $data['notes'] ?? '';
-
-        if (!$patientId || !$doctorId || !$date || !$time) {
+        if (!Validator::required($data, ['doctor_id', 'appointment_date', 'appointment_time'])) {
             Response::error("Doctor, date, and time are required fields.", 400);
         }
+
+        $patientId = $userRole === 'admin' ? ($data['patient_id'] ?? null) : $userId;
+        if (!$patientId) {
+            Response::error("Patient ID is required.", 400);
+        }
+
+        $doctorId  = (int)$data['doctor_id'];
+        $date      = trim($data['appointment_date']);
+        $time      = trim($data['appointment_time']);
+        $notes     = trim($data['notes'] ?? '');
 
         try {
             $appointmentModel = new Appointment($this->db);
             $appointmentModel->setPatientId((int)$patientId);
-            $appointmentModel->setDoctorId((int)$doctorId);
+            $appointmentModel->setDoctorId($doctorId);
             $appointmentModel->setAppointmentDate($date);
             $appointmentModel->setAppointmentTime($time);
             $appointmentModel->setNotes($notes);
@@ -91,11 +95,15 @@ class AppointmentController extends Controller
     {
         $data = $this->getInput();
 
-        $appointmentId = $data['appointment_id'] ?? null;
-        $status        = $data['status'] ?? null;
-
-        if (!$appointmentId || !$status) {
+        if (!Validator::required($data, ['appointment_id', 'status'])) {
             Response::error("Appointment ID and status are required.", 400);
+        }
+
+        $appointmentId = (int)$data['appointment_id'];
+        $status        = trim($data['status']);
+
+        if (!Validator::validStatus($status)) {
+            Response::error("Invalid appointment status.", 400);
         }
 
         $userId   = $this->getUserId();
@@ -105,7 +113,7 @@ class AppointmentController extends Controller
             if ($userRole === 'doctor') {
                 $doctorModel = new Doctor($this->db);
                 $doctorModel->setUserId((int)$userId);
-                $doctorModel->updateAppointmentStatus((int)$appointmentId, $status);
+                $doctorModel->updateAppointmentStatus($appointmentId, $status);
                 Response::success("Appointment status updated to '$status'.");
             } elseif ($userRole === 'patient') {
                 if ($status !== 'cancelled') {
@@ -113,11 +121,11 @@ class AppointmentController extends Controller
                 }
                 $patientModel = new Patient($this->db);
                 $patientModel->setId((int)$userId);
-                $patientModel->cancelAppointment((int)$appointmentId);
+                $patientModel->cancelAppointment($appointmentId);
                 Response::success("Appointment successfully cancelled.");
             } elseif ($userRole === 'admin') {
                 $appointmentModel = new Appointment($this->db);
-                $appointmentModel->setId((int)$appointmentId);
+                $appointmentModel->setId($appointmentId);
                 $appointmentModel->setStatus($status);
                 $appointmentModel->updateStatus();
                 Response::success("Appointment status updated to '$status' by administrator.");
