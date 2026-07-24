@@ -33,6 +33,24 @@ class Validator
     }
 
     /**
+     * Validates gender value against allowed enum values.
+     */
+    public static function validGender(string $gender): bool
+    {
+        $allowed = ['male', 'female', 'other'];
+        return in_array(strtolower(trim($gender)), $allowed, true);
+    }
+
+    /**
+     * Validates YYYY-MM-DD date format.
+     */
+    public static function validDate(string $date): bool
+    {
+        $d = DateTime::createFromFormat('Y-m-d', trim($date));
+        return $d && $d->format('Y-m-d') === trim($date);
+    }
+
+    /**
      * Sanitizes string input.
      */
     public static function sanitize(string $input): string

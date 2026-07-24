@@ -74,7 +74,8 @@ class AuthController extends Controller
         $email    = trim($data['email']);
         $password = $data['password'];
         $phone    = trim($data['phone'] ?? '');
-        $role     = 'patient';
+        $dob      = !empty($data['date_of_birth']) ? trim($data['date_of_birth']) : (!empty($data['dob']) ? trim($data['dob']) : null);
+        $gender   = !empty($data['gender']) ? trim($data['gender']) : null;
 
         if (!Validator::email($email)) {
             Response::error("Please provide a valid email address.", 400);
@@ -84,14 +85,24 @@ class AuthController extends Controller
             Response::error("Password must be at least 6 characters long.", 400);
         }
 
+        if ($gender !== null && !Validator::validGender($gender)) {
+            Response::error("Invalid gender selection. Allowed values are male, female, or other.", 400);
+        }
+
+        if ($dob !== null && !Validator::validDate($dob)) {
+            Response::error("Invalid date of birth format. Must be YYYY-MM-DD.", 400);
+        }
+
         try {
-            $userModel = new User($this->db);
-            $userModel->setName($name);
-            $userModel->setEmail($email);
-            $userModel->setPassword($password);
-            $userModel->setRole($role);
-            $userModel->setPhone($phone);
-            $userId = $userModel->register();
+            $patientModel = new Patient($this->db);
+            $patientModel->setName($name);
+            $patientModel->setEmail($email);
+            $patientModel->setPassword($password);
+            $patientModel->setPhone($phone);
+            $patientModel->setDateOfBirth($dob);
+            $patientModel->setGender($gender);
+
+            $userId = $patientModel->registerPatient();
 
             if ($userId) {
                 Response::json([

@@ -36,7 +36,7 @@ export default function App() {
     const headers = {
       ...options.headers,
     };
-    
+
     // Auto-detect JSON and configure content-type
     if (options.body && !(options.body instanceof FormData)) {
       headers['Content-Type'] = 'application/json';
@@ -46,10 +46,10 @@ export default function App() {
       // Rewrite legacy URLs (e.g., /appointments.php?search=x) to MVC router (/index.php?route=appointments&search=x)
       let processedUrl = url;
       if (processedUrl.startsWith('/')) processedUrl = processedUrl.substring(1);
-      
+
       const [path, queryString] = processedUrl.split('?');
       const routeName = path.replace('.php', '');
-      
+
       let finalUrl = `/index.php?route=${routeName}`;
       if (queryString) {
         finalUrl += `&${queryString}`;
@@ -96,11 +96,11 @@ export default function App() {
     }
   };
 
-  const register = async (name, email, password, phone) => {
+  const register = async (name, email, password, phone, dob, gender) => {
     try {
       const data = await apiFetch('/auth.php', {
         method: 'POST',
-        body: JSON.stringify({ action: 'register', name, email, password, phone })
+        body: JSON.stringify({ action: 'register', name, email, password, phone, date_of_birth: dob, gender })
       });
       if (data.success) {
         return { success: true };
@@ -144,65 +144,65 @@ export default function App() {
             <Route path="/login" element={user ? <RoleRedirect user={user} /> : <Login />} />
 
             {/* Protected Patient Routes */}
-            <Route 
-              path="/patient" 
+            <Route
+              path="/patient"
               element={
                 <ProtectedRoute allowedRoles={['patient']} user={user}>
                   <PatientDashboard />
                 </ProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="/patient/book" 
+            <Route
+              path="/patient/book"
               element={
                 <ProtectedRoute allowedRoles={['patient']} user={user}>
                   <BookAppointment />
                 </ProtectedRoute>
-              } 
+              }
             />
 
             {/* Protected Doctor Routes */}
-            <Route 
-              path="/doctor" 
+            <Route
+              path="/doctor"
               element={
                 <ProtectedRoute allowedRoles={['doctor']} user={user}>
                   <DoctorDashboard />
                 </ProtectedRoute>
-              } 
+              }
             />
 
             {/* Protected Admin Routes */}
-            <Route 
-              path="/admin" 
+            <Route
+              path="/admin"
               element={
                 <ProtectedRoute allowedRoles={['admin']} user={user}>
                   <AdminDashboard />
                 </ProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="/admin/appointments" 
+            <Route
+              path="/admin/appointments"
               element={
                 <ProtectedRoute allowedRoles={['admin']} user={user}>
                   <AdminAppointments />
                 </ProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="/admin/doctors" 
+            <Route
+              path="/admin/doctors"
               element={
                 <ProtectedRoute allowedRoles={['admin']} user={user}>
                   <AdminDoctors />
                 </ProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="/admin/departments" 
+            <Route
+              path="/admin/departments"
               element={
                 <ProtectedRoute allowedRoles={['admin']} user={user}>
                   <AdminDepartments />
                 </ProtectedRoute>
-              } 
+              }
             />
 
             {/* Catch-all fallback */}
@@ -331,7 +331,7 @@ function AppLayout({ children }) {
           </nav>
 
           {/* Mobile Menu Trigger */}
-          <button 
+          <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             style={{
               background: 'none',
@@ -359,18 +359,18 @@ function AppLayout({ children }) {
             <Link to="/">Home</Link>
             <Link to="/doctors">Doctors</Link>
             <Link to="/contact">Contact</Link>
-            
+
             {user?.role === 'patient' && (
               <>
                 <Link to="/patient">Dashboard</Link>
                 <Link to="/patient/book">Book Appointment</Link>
               </>
             )}
-            
+
             {user?.role === 'doctor' && (
               <Link to="/doctor">Consultations</Link>
             )}
-            
+
             {user?.role === 'admin' && (
               <>
                 <Link to="/admin">Control Panel</Link>
@@ -393,7 +393,8 @@ function AppLayout({ children }) {
         )}
 
         {/* Inline CSS styling hack to inject responsive nav stylesheet */}
-        <style dangerouslySetInnerHTML={{__html: `
+        <style dangerouslySetInnerHTML={{
+          __html: `
           .nav-link {
             text-decoration: none;
             color: var(--text-muted);

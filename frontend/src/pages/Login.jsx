@@ -6,7 +6,7 @@ import { LogIn, UserPlus, AlertCircle, CheckCircle } from 'lucide-react';
 export default function Login() {
   const { login, register } = useContext(AuthContext);
   const navigate = useNavigate();
-  
+
   const [isLoginTab, setIsLoginTab] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -19,6 +19,8 @@ export default function Login() {
   const [registerName, setRegisterName] = useState('');
   const [registerEmail, setRegisterEmail] = useState('');
   const [registerPhone, setRegisterPhone] = useState('');
+  const [registerDob, setRegisterDob] = useState('');
+  const [registerGender, setRegisterGender] = useState('male');
   const [registerPassword, setRegisterPassword] = useState('');
   const [registerConfirmPassword, setRegisterConfirmPassword] = useState('');
 
@@ -82,13 +84,22 @@ export default function Login() {
 
     setLoading(true);
     try {
-      const result = await register(registerName, registerEmail, registerPassword, registerPhone);
+      const result = await register(
+        registerName, 
+        registerEmail, 
+        registerPassword, 
+        registerPhone,
+        registerDob,
+        registerGender
+      );
       if (result.success) {
         setSuccess('Registration successful! You can now login.');
         // Clear registration fields
         setRegisterName('');
         setRegisterEmail('');
         setRegisterPhone('');
+        setRegisterDob('');
+        setRegisterGender('male');
         setRegisterPassword('');
         setRegisterConfirmPassword('');
         // Switch to login tab
@@ -111,7 +122,7 @@ export default function Login() {
       width: '100%'
     }}>
       <div className="glass-card" style={{ padding: '2.5rem 2rem' }}>
-        
+
         {/* Tab Headers */}
         <div style={{
           display: 'flex',
@@ -119,7 +130,7 @@ export default function Login() {
           marginBottom: '2rem',
           position: 'relative'
         }}>
-          <button 
+          <button
             onClick={() => { setIsLoginTab(true); setError(''); setSuccess(''); }}
             style={{
               flex: 1,
@@ -136,7 +147,7 @@ export default function Login() {
           >
             Sign In
           </button>
-          <button 
+          <button
             onClick={() => { setIsLoginTab(false); setError(''); setSuccess(''); }}
             style={{
               flex: 1,
@@ -174,21 +185,21 @@ export default function Login() {
           <form onSubmit={handleLoginSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             <div className="form-group">
               <label className="form-label">Email Address</label>
-              <input 
-                type="email" 
-                className="form-input" 
+              <input
+                type="email"
+                className="form-input"
                 placeholder="you@example.com"
                 value={loginEmail}
                 onChange={(e) => setLoginEmail(e.target.value)}
                 disabled={loading}
               />
             </div>
-            
+
             <div className="form-group">
               <label className="form-label">Password</label>
-              <input 
-                type="password" 
-                className="form-input" 
+              <input
+                type="password"
+                className="form-input"
                 placeholder="••••••••"
                 value={loginPassword}
                 onChange={(e) => setLoginPassword(e.target.value)}
@@ -196,9 +207,9 @@ export default function Login() {
               />
             </div>
 
-            <button 
-              type="submit" 
-              className="btn btn-primary" 
+            <button
+              type="submit"
+              className="btn btn-primary"
               style={{ width: '100%', marginTop: '1rem' }}
               disabled={loading}
             >
@@ -217,9 +228,9 @@ export default function Login() {
           <form onSubmit={handleRegisterSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
             <div className="form-group">
               <label className="form-label">Full Name</label>
-              <input 
-                type="text" 
-                className="form-input" 
+              <input
+                type="text"
+                className="form-input"
                 placeholder="Jane Doe"
                 value={registerName}
                 onChange={(e) => setRegisterName(e.target.value)}
@@ -229,9 +240,9 @@ export default function Login() {
 
             <div className="form-group">
               <label className="form-label">Email Address</label>
-              <input 
-                type="email" 
-                className="form-input" 
+              <input
+                type="email"
+                className="form-input"
                 placeholder="jane.doe@example.com"
                 value={registerEmail}
                 onChange={(e) => setRegisterEmail(e.target.value)}
@@ -251,11 +262,38 @@ export default function Login() {
               />
             </div>
 
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div className="form-group">
+                <label className="form-label">Date of Birth</label>
+                <input 
+                  type="date" 
+                  className="form-input" 
+                  value={registerDob}
+                  onChange={(e) => setRegisterDob(e.target.value)}
+                  disabled={loading}
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Gender</label>
+                <select 
+                  className="form-input" 
+                  value={registerGender}
+                  onChange={(e) => setRegisterGender(e.target.value)}
+                  disabled={loading}
+                >
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+
             <div className="form-group">
               <label className="form-label">Password</label>
-              <input 
-                type="password" 
-                className="form-input" 
+              <input
+                type="password"
+                className="form-input"
                 placeholder="At least 6 characters"
                 value={registerPassword}
                 onChange={(e) => setRegisterPassword(e.target.value)}
@@ -265,9 +303,9 @@ export default function Login() {
 
             <div className="form-group">
               <label className="form-label">Confirm Password</label>
-              <input 
-                type="password" 
-                className="form-input" 
+              <input
+                type="password"
+                className="form-input"
                 placeholder="Repeat password"
                 value={registerConfirmPassword}
                 onChange={(e) => setRegisterConfirmPassword(e.target.value)}
@@ -275,9 +313,9 @@ export default function Login() {
               />
             </div>
 
-            <button 
-              type="submit" 
-              className="btn btn-secondary" 
+            <button
+              type="submit"
+              className="btn btn-secondary"
               style={{ width: '100%', marginTop: '1rem' }}
               disabled={loading}
             >
