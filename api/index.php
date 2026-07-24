@@ -23,6 +23,9 @@ switch ($route) {
     case 'stats':
         App::dispatch('AdminController', 'stats');
         break;
+    case 'patients':
+        App::dispatch('PatientController', 'handle');
+        break;
     
     default:
         Response::error("Endpoint not found", 404);
