@@ -288,7 +288,7 @@ function AppLayout({ children }) {
             fontSize: '1.25rem'
           }}>
             <Heart size={22} color="var(--primary)" fill="var(--primary)" />
-            <span>Antigravity <span style={{ color: 'var(--primary)' }}>Clinic</span></span>
+            <span>MediSphere <span style={{ color: 'var(--primary)' }}>Clinic</span></span>
           </Link>
 
           {/* Navigation Links - Desktop */}
@@ -455,7 +455,7 @@ function AppLayout({ children }) {
           color: 'var(--text-muted)'
         }}>
           <div>
-            <p style={{ margin: 0 }}>© 2026 Antigravity Digital Hospital. Group Project. All rights reserved.</p>
+            <p style={{ margin: 0 }}>© 2026 MediSphere Clinic. Group Project. All rights reserved.</p>
           </div>
           <div style={{ display: 'flex', gap: '1.5rem' }}>
             <Link to="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Home</Link>

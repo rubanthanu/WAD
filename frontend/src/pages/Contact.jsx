@@ -66,7 +66,7 @@ export default function Contact() {
       {/* Contact Header */}
       <section style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto' }}>
         <h1 style={{ fontSize: '2.5rem' }}>Get in Touch & About Us</h1>
-        <p>Antigravity Digital Hospital bridges advanced healthcare with digital scheduling. Learn more about our systems or submit inquiries below.</p>
+        <p>MediSphere Clinic bridges advanced healthcare with digital scheduling. Learn more about our systems or submit inquiries below.</p>
       </section>
 
       {/* Main Grid: Info & Form */}
@@ -111,7 +111,7 @@ export default function Contact() {
               </div>
               <div>
                 <h4 style={{ margin: 0, fontSize: '0.95rem' }}>Call Us</h4>
-                <p style={{ margin: 0, fontSize: '0.85rem' }}>1-800-ANTIGRAVITY (268-4472)</p>
+                <p style={{ margin: 0, fontSize: '0.85rem' }}>1-800-MEDISPHERE (268-4472)</p>
               </div>
             </div>
 
@@ -130,7 +130,7 @@ export default function Contact() {
               </div>
               <div>
                 <h4 style={{ margin: 0, fontSize: '0.95rem' }}>General Email</h4>
-                <p style={{ margin: 0, fontSize: '0.85rem' }}>care@antigravityhospital.com</p>
+                <p style={{ margin: 0, fontSize: '0.85rem' }}>care@medisphereclinic.com</p>
               </div>
             </div>
           </div>
