@@ -1,7 +1,12 @@
 <?php
 
-class Admin extends Model
+class Admin extends User
 {
+    public function __construct(PDO $db)
+    {
+        parent::__construct($db);
+        $this->setRole('admin');
+    }
 
     public function createDoctor(
         string $name,

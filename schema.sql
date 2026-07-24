@@ -31,6 +31,25 @@ CREATE TABLE IF NOT EXISTS doctors (
     FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- 4. Patients Table (Linked to users for extended patient profile data)
+CREATE TABLE IF NOT EXISTS patients (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL UNIQUE,
+    date_of_birth DATE NULL,
+    gender ENUM('male', 'female', 'other') NULL,
+    address TEXT NULL,
+    medical_history TEXT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 5. Admins Table (Linked to users for extended admin profile data)
+CREATE TABLE IF NOT EXISTS admins (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL UNIQUE,
+    department_permissions VARCHAR(255) DEFAULT 'all',
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- 4. Appointments Table
 CREATE TABLE IF NOT EXISTS appointments (
     id INT AUTO_INCREMENT PRIMARY KEY,

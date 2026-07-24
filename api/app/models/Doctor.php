@@ -1,11 +1,8 @@
 <?php
 
-class Doctor extends Model
+class Doctor extends User
 {
-    
-    private ?int $id = null;
-
-    private ?int $userId = null;
+    private ?int $doctorId = null;
 
     private string $specialization = '';
 
@@ -13,14 +10,30 @@ class Doctor extends Model
 
     private string $availability = '';
 
-    public function getId(): ?int
+    public function __construct(PDO $db)
     {
-        return $this->id;
+        parent::__construct($db);
+        $this->setRole('doctor');
+    }
+
+    public function getDoctorId(): ?int
+    {
+        return $this->doctorId;
+    }
+
+    public function setDoctorId(?int $doctorId): void
+    {
+        $this->doctorId = $doctorId;
     }
 
     public function getUserId(): ?int
     {
-        return $this->userId;
+        return $this->getId();
+    }
+
+    public function setUserId(?int $userId): void
+    {
+        $this->setId($userId);
     }
 
     public function getSpecialization(): string
@@ -36,16 +49,6 @@ class Doctor extends Model
     public function getAvailability(): string
     {
         return $this->availability;
-    }
-
-    public function setId(?int $id): void
-    {
-        $this->id = $id;
-    }
-
-    public function setUserId(?int $userId): void
-    {
-        $this->userId = $userId;
     }
 
     public function setSpecialization(string $specialization): void

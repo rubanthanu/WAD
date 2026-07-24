@@ -3,17 +3,17 @@
 class User extends Model
 {
     
-    private ?int $id = null;
+    protected ?int $id = null;
 
-    private string $name = '';
+    protected string $name = '';
 
-    private string $email = '';
+    protected string $email = '';
 
-    private string $role = '';
+    protected string $role = '';
 
-    private ?string $phone = null;
+    protected ?string $phone = null;
 
-    private ?string $password = null;
+    protected ?string $password = null;
 
     public function getId(): ?int
     {

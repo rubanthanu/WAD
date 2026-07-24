@@ -1,18 +1,11 @@
 <?php
 
-class Patient extends Model
+class Patient extends User
 {
-    
-    private ?int $id = null;
-
-    public function getId(): ?int
+    public function __construct(PDO $db)
     {
-        return $this->id;
-    }
-
-    public function setId(?int $id): void
-    {
-        $this->id = $id;
+        parent::__construct($db);
+        $this->setRole('patient');
     }
 
     public function getBookedAppointments(): array
