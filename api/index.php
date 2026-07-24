@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/app/core/index.php';
+require_once __DIR__ . '/app/core/App.php';
 
 $route = $_GET['route'] ?? '';
 

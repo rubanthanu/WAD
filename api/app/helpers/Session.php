@@ -95,7 +95,7 @@ class Session
     /**
      * Checks whether the authenticated session has timed out.
      *
-     * - Called on every request (from core/index.php after session_start).
+     * - Called on every request (from core/App.php after session_start).
      * - Unauthenticated sessions are skipped (no impact on login page).
      * - On timeout: destroys session, returns HTTP 401, exits.
      * - Active sessions: refreshes the last-activity timestamp.
