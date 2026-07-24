@@ -37,8 +37,6 @@ CREATE TABLE IF NOT EXISTS patients (
     user_id INT NOT NULL UNIQUE,
     date_of_birth DATE NULL,
     gender ENUM('male', 'female', 'other') NULL,
-    address TEXT NULL,
-    medical_history TEXT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

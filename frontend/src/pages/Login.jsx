@@ -216,12 +216,7 @@ export default function Login() {
               {loading ? 'Processing...' : 'Sign In'} <LogIn size={18} />
             </button>
 
-            <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-              Demo Credentials:<br />
-              Admin: <strong>admin@hospital.com</strong> (PW: <strong>admin123</strong>)<br />
-              Doctor: <strong>sarah.j@hospital.com</strong> (PW: <strong>doctor123</strong>)<br />
-              Patient: <strong>jane.doe@example.com</strong> (PW: <strong>patient123</strong>)
-            </div>
+           
           </form>
         ) : (
           /* REGISTRATION FORM */
